@@ -1,0 +1,51 @@
+# Builds the Meal Planner app and publishes it to the gh-pages branch.
+# GitHub Pages then serves it at https://<owner>.github.io/<repo>/
+# One-time setup: Settings → Pages → Source: "Deploy from a branch" → gh-pages, / (root).
+name: Deploy Meal Planner to GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/meal-planner-pwa]
+    paths:
+      - 'meal-planner/**'
+      - '.github/workflows/meal-planner-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meal-planner-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: meal-planner
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: meal-planner/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      - name: Publish dist/ to the gh-pages branch
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist
+          touch .nojekyll
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898299+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "Deploy Meal Planner from ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages

@@ -36,8 +36,12 @@ The app is a folder of static files (`dist/`). Any static host with HTTPS works.
 paths are relative, so it also works in a sub-folder (for example GitHub Pages).
 These options are free for this size of site:
 
-- **GitHub Pages**: push `dist/` to a `gh-pages` branch, or use a Pages workflow that runs
-  `npm ci && npm run build` in `meal-planner/` and publishes `meal-planner/dist`.
+- **GitHub Pages** (set up in this repo): the workflow
+  `.github/workflows/meal-planner-pages.yml` runs the tests, builds the app, and pushes
+  `dist/` to the `gh-pages` branch on every change to `meal-planner/`.
+  One-time step: **Settings → Pages → Build and deployment → Source: Deploy from a branch →
+  Branch: `gh-pages`, folder `/ (root)` → Save**. The app is then at
+  `https://mihirs-0.github.io/autocap/`.
 - **Netlify** or **Cloudflare Pages**: build command `npm run build`, base directory
   `meal-planner`, publish directory `dist`.
 - **Your own server** (Caddy, nginx): copy `dist/` to the web root. HTTPS is required.
