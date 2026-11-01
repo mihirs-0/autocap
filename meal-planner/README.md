@@ -41,7 +41,8 @@ These options are free for this size of site:
   `dist/` to the `gh-pages` branch on every change to `meal-planner/`.
   One-time step: **Settings → Pages → Build and deployment → Source: Deploy from a branch →
   Branch: `gh-pages`, folder `/ (root)` → Save**. The app is then at
-  `https://mihirs-0.github.io/autocap/`.
+  `https://mihirss.com/autocap/` (your GitHub Pages custom domain;
+  `https://mihirs-0.github.io/autocap/` redirects there).
 - **Netlify** or **Cloudflare Pages**: build command `npm run build`, base directory
   `meal-planner`, publish directory `dist`.
 - **Your own server** (Caddy, nginx): copy `dist/` to the web root. HTTPS is required.
